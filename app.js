@@ -1155,6 +1155,34 @@ function hideLoadingScreen() {
   if (ls) { ls.classList.add('hidden'); setTimeout(() => { ls.style.display = 'none'; }, 900); }
 }
 
+const SMALL_SCREEN_MIN_WIDTH = 1475;
+const SMALL_SCREEN_MIN_HEIGHT = 640;
+function isSmallScreen() {
+  return window.innerWidth < SMALL_SCREEN_MIN_WIDTH || window.innerHeight < SMALL_SCREEN_MIN_HEIGHT;
+}
+function showSmallScreenWarning() {
+  const el = document.getElementById('small-screen-screen');
+  if (!el) return;
+  el.classList.remove('hidden');
+}
+function hideSmallScreenWarning() {
+  const el = document.getElementById('small-screen-screen');
+  if (!el) return;
+  el.classList.add('hidden');
+}
+function checkSmallScreen() {
+  if (isSmallScreen()) {
+    hideLoadingScreen();
+    showSmallScreenWarning();
+  } else {
+    hideSmallScreenWarning();
+  }
+}
+function handleResize() {
+  if (renderer) resize();
+  checkSmallScreen();
+}
+
 // ── Init ───────────────────────────────────────────────────────────────────────
 function init() {
   setLoadingProgress(10, 'Setting up renderer…');
@@ -1210,7 +1238,7 @@ function init() {
   roomGroup = new THREE.Group(); scene.add(roomGroup);
 
   setLoadingProgress(70, 'Registering events…');
-  window.addEventListener('resize', resize);
+  window.addEventListener('resize', handleResize);
   canvas.addEventListener('pointerdown', onPointerDown);
   canvas.addEventListener('pointermove', onPointerMove);
   canvas.addEventListener('pointerup', onPointerUp);
@@ -1235,6 +1263,7 @@ function init() {
   loadPreset('modern');
 
   setLoadingProgress(100, 'Ready! ✨');
+  checkSmallScreen();
   setTimeout(() => { animate(0); hideLoadingScreen(); }, 1400);
 }
 
@@ -2680,5 +2709,5 @@ function animate(time) {
 }
 
 window.addEventListener('DOMContentLoaded', init);
-window.addEventListener('resize', () => { if (renderer) resize(); });
+window.addEventListener('resize', handleResize);
 
