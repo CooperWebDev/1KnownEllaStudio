@@ -1960,8 +1960,8 @@ function handleImportFile(e) {
         objects: data.objects || [],
       });
       fitCameraToHouse();
-      showToast('✓ Project imported');
-    } catch { showToast('⚠ Could not read file'); }
+      showToast('Project imported');
+    } catch { showToast('Could not read file'); }
   };
   reader.readAsText(file);
   e.target.value = '';
@@ -2494,14 +2494,14 @@ function buildPropsUI() {
 
   document.getElementById('btn-screenshot').addEventListener('click', () => {
     renderer.render(scene, camera);
-    const a = document.createElement('a'); a.href = renderer.domElement.toDataURL('image/png'); a.download = 'coopergift.png'; a.click();
+    const a = document.createElement('a'); a.href = renderer.domElement.toDataURL('image/png'); a.download = '1KnownEllaStudio.png'; a.click();
     showToast('📸 Screenshot saved');
   });
   document.getElementById('btn-export').addEventListener('click', () => {
     const data = { rooms, doors, windows: windows2, objects: serializeState().objects };
     const a = document.createElement('a');
     a.href = URL.createObjectURL(new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' }));
-    a.download = 'coopergift-scene.json'; a.click(); showToast('💾 Exported!');
+    a.download = '1KnownEllaStudio.json'; a.click(); showToast('💾 Exported!');
   });
 }
 
